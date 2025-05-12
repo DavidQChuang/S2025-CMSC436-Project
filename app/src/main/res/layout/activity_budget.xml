@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".view.BudgetActivity">
+
+    <!-- Toolbar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/purple_500"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:title="Budget Management"
+            app:titleTextColor="@color/white"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Main Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Current Budget Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Current Monthly Budget"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/budgetLeftText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="$2000.00"
+                        android:textSize="24sp"
+                        android:textColor="@color/green_500"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Adjust Budget"
+                        android:textSize="16sp"/>
+
+                    <!-- SeekBar for budget adjustment -->
+                    <SeekBar
+                        android:id="@+id/budgetSeekBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:max="10000"
+                        android:progress="2000"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Min: $500"
+                            android:textSize="12sp"/>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Max: $10,000"
+                            android:textSize="12sp"/>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/saveBudgetButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Save Budget"
+                        android:backgroundTint="@color/purple_500"
+                        android:textColor="@color/white"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Budget Breakdown Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Budget Breakdown"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/budgetUsedText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Used: $500 of $2000"
+                        android:textSize="16sp"/>
+
+                    <ProgressBar
+                        android:id="@+id/budgetProgressBar"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:layout_marginTop="8dp"
+                        android:max="100"
+                        android:progress="25"
+                        android:progressDrawable="@drawable/progress_budget"/>
+
+                    <TextView
+                        android:id="@+id/budgetRemainingText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Remaining: $1500"
+                        android:textSize="16sp"
+                        android:textColor="@color/green_500"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Category Budgets Card (originally planned but ran out of time) -->
+
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:cardCornerRadius="8dp"-->
+<!--                app:cardElevation="4dp">-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:padding="16dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="Category Budgets"-->
+<!--                        android:textSize="18sp"-->
+<!--                        android:textStyle="bold"/>-->
+
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="8dp"-->
+<!--                        android:orientation="vertical">-->
+
+<!--                        &lt;!&ndash; Food Budget &ndash;&gt;-->
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginBottom="8dp"-->
+<!--                            android:orientation="vertical">-->
+
+<!--                            <LinearLayout-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:orientation="horizontal">-->
+
+<!--                                <ImageView-->
+<!--                                    android:layout_width="24dp"-->
+<!--                                    android:layout_height="24dp"-->
+<!--                                    android:src="@drawable/ic_food"/>-->
+
+<!--                                <TextView-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:layout_marginStart="8dp"-->
+<!--                                    android:text="Food"-->
+<!--                                    android:textSize="16sp"/>-->
+
+<!--                                <View-->
+<!--                                    android:layout_width="0dp"-->
+<!--                                    android:layout_height="1dp"-->
+<!--                                    android:layout_weight="1"/>-->
+
+<!--                                <TextView-->
+<!--                                    android:id="@+id/tvFoodBudget"-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:text="$300/$500"-->
+<!--                                    android:textSize="16sp"/>-->
+
+<!--                            </LinearLayout>-->
+
+<!--                            <ProgressBar-->
+<!--                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="4dp"-->
+<!--                                android:layout_marginTop="4dp"-->
+<!--                                android:max="500"-->
+<!--                                android:progress="300"-->
+<!--                                android:progressDrawable="@drawable/progress_category"/>-->
+
+<!--                        </LinearLayout>-->
+
+<!--                        &lt;!&ndash; Transportation Budget &ndash;&gt;-->
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginBottom="8dp"-->
+<!--                            android:orientation="vertical">-->
+
+<!--                            <LinearLayout-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:orientation="horizontal">-->
+
+<!--                                <ImageView-->
+<!--                                    android:layout_width="24dp"-->
+<!--                                    android:layout_height="24dp"-->
+<!--                                    android:src="@drawable/ic_transport"/>-->
+
+<!--                                <TextView-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:layout_marginStart="8dp"-->
+<!--                                    android:text="Transportation"-->
+<!--                                    android:textSize="16sp"/>-->
+
+<!--                                <View-->
+<!--                                    android:layout_width="0dp"-->
+<!--                                    android:layout_height="1dp"-->
+<!--                                    android:layout_weight="1"/>-->
+
+<!--                                <TextView-->
+<!--                                    android:id="@+id/tvTransportBudget"-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:text="$150/$300"-->
+<!--                                    android:textSize="16sp"/>-->
+
+<!--                            </LinearLayout>-->
+
+<!--                            <ProgressBar-->
+<!--                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="4dp"-->
+<!--                                android:layout_marginTop="4dp"-->
+<!--                                android:max="300"-->
+<!--                                android:progress="150"-->
+<!--                                android:progressDrawable="@drawable/progress_category"/>-->
+
+<!--                        </LinearLayout>-->
+
+<!--                        &lt;!&ndash; Entertainment Budget &ndash;&gt;-->
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginBottom="8dp"-->
+<!--                            android:orientation="vertical">-->
+
+<!--                            <LinearLayout-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:orientation="horizontal">-->
+
+<!--                                <ImageView-->
+<!--                                    android:layout_width="24dp"-->
+<!--                                    android:layout_height="24dp"-->
+<!--                                    android:src="@drawable/ic_entertainment"/>-->
+
+<!--                                <TextView-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:layout_marginStart="8dp"-->
+<!--                                    android:text="Entertainment"-->
+<!--                                    android:textSize="16sp"/>-->
+
+<!--                                <View-->
+<!--                                    android:layout_width="0dp"-->
+<!--                                    android:layout_height="1dp"-->
+<!--                                    android:layout_weight="1"/>-->
+
+<!--                                <TextView-->
+<!--                                    android:id="@+id/tvEntertainmentBudget"-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:text="$75/$200"-->
+<!--                                    android:textSize="16sp"/>-->
+
+<!--                            </LinearLayout>-->
+
+<!--                            <ProgressBar-->
+<!--                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="4dp"-->
+<!--                                android:layout_marginTop="4dp"-->
+<!--                                android:max="200"-->
+<!--                                android:progress="75"-->
+<!--                                android:progressDrawable="@drawable/progress_category"/>-->
+
+<!--                        </LinearLayout>-->
+
+<!--                    </LinearLayout>-->
+
+<!--                    <Button-->
+<!--                        android:id="@+id/btnManageCategories"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="8dp"-->
+<!--                        android:text="Manage Categories"-->
+<!--                        android:backgroundTint="@color/purple_500"-->
+<!--                        android:textColor="@color/white"/>-->
+
+<!--                </LinearLayout>-->
+<!--            </androidx.cardview.widget.CardView>-->
+
+            <!-- Advertising Banner -->
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/adView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:adSize="BANNER"
+                app:adUnitId="ca-app-pub-3940256099942544/6300978111"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
