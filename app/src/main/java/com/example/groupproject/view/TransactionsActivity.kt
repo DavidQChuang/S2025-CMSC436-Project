@@ -42,7 +42,9 @@ class TransactionsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transactions)
 
+        // Get UI elements and set up adapter & recycler
         getUIElements()
+        setupRecyclerView()
 
         // Set up model & controller
         model = FinanceModel(applicationContext)
