@@ -90,7 +90,8 @@ class FinanceController(private val model: FinanceModel,private val context: Act
                     callback(currency)
                 }
             }else{
-                callback(Currency.getAvailableCurrencies().first())
+                Log.i("FinanceController", "Location was null. Using default.")
+                callback(Currency.getInstance(Locale.getDefault()))
             }
         }.addOnFailureListener {
             Log.e("LocationError", "Failed to get location: ${it.message}")

@@ -111,13 +111,13 @@ class MainActivity : AppCompatActivity() {
 
                 controller.getCurrencySymbol { currency ->
                     var currencyPos = adapter.getPosition(currency.symbol)
+                    Log.i("MainActivity", "Setting currency to ${currency.symbol}.")
 
                     if(currencyPos == -1){
                         adapter.add(currency.symbol)
                         currencyPos = adapter.getPosition(currency.symbol)
                     }
 
-                    Log.i("MainActivity", "Setting currency to ${currency.symbol}.")
                     currencySpinner.setSelection(currencyPos)
                 }
             }
