@@ -40,14 +40,37 @@ class BudgetActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener  {
         controller = FinanceController(model, this)
 
         // Set up seek bar listener
-        budgetUsed = 500 // TODO: retrieve value from model
+        // TODO: retrieve value from model -- Agus
+        controller.loadTransactions { txns ->
+            budgetUsed = txns.sumOf { 
+                it.amount.toInt() 
+            }
+            runOnUiThread {
+                // re-draw the SeekBar/UI with the real “used” amount
+                updateBudgetDisplay(budgetSeekBar.progress.toFloat())
+            } 
+        }
 
         updateBudgetDisplay(model.budgetGoal.toFloat())
         budgetSeekBar.setOnSeekBarChangeListener(this)
 
         // Set up save budget button
-        // TODO: Save value of budget seek bar to model (see below)
-//        saveBudgetButton.setOnClickListener(this)
+        // TODO: Save value of budget seek bar to model (see below) -- Agus
+        //        saveBudgetButton.setOnClickListener(this)
+
+        controller.loadBudget { limit ->
+            budgetSeekBar.progress = limit
+            updateBudgetDisplay(limit.toFloat())
+        }
+        
+        saveBudgetButton.setOnClickListener {
+            val newLimit = budgetSeekBar.progress
+            controller.saveBudget(newLimit) {
+                updateBudgetDisplay(newLimit.toFloat())
+            }
+        }
+
+
 
         // Set up ad
         val adRequest = AdRequest.Builder().build()

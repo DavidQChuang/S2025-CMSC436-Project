@@ -44,7 +44,17 @@ class MainActivity : AppCompatActivity() {
         model = FinanceModel(applicationContext)
         controller = FinanceController(model, this)
 
-        // TODO: Set up UI elements in MainActivity using info from Model
+        // TODO: Set up UI elements in MainActivity using info from Model -- Agus
+        controller.loadBudget { budgetMax ->
+            controller.loadTransactions { txns ->
+                val totalSpent = txns.sumOf { it.amount.toInt() }
+                runOnUiThread {
+                    setBudget(totalSpent, budgetMax)
+                    setSpending(totalSpent)
+                }
+            }
+        }
+
 
         // Set up navigation
         bottomNavigation.setOnItemSelectedListener { item ->

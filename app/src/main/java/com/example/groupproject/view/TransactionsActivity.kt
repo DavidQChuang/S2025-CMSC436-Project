@@ -25,6 +25,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 import java.util.Locale
 import java.text.SimpleDateFormat
+import java.util.Calendar
 
 class TransactionsActivity : AppCompatActivity() {
     private lateinit var model: FinanceModel
@@ -50,6 +51,9 @@ class TransactionsActivity : AppCompatActivity() {
         model = FinanceModel(applicationContext)
         controller = FinanceController(model, this)
 
+        // Set up the transaction list RecyclerView (adapter + divider) -- Agus
+        setupRecyclerView()
+
         // Setup plus button
         addTransaction.setOnClickListener {
             showAddTransactionDialog()
@@ -68,7 +72,21 @@ class TransactionsActivity : AppCompatActivity() {
         adView.loadAd(adRequest)
     }
 
-    public fun loadTransactions() {
+    public fun loadTransactions() {// -- Agus
+        progressBar.visibility = View.VISIBLE
+        controller.loadTransactions { transactions ->
+            runOnUiThread {
+                progressBar.visibility = View.GONE
+                if (transactions.isEmpty()) {
+                    emptyState.visibility = View.VISIBLE
+                    transactionsRecyclerView.visibility = View.GONE
+                } else {
+                    emptyState.visibility = View.GONE
+                    transactionsRecyclerView.visibility = View.VISIBLE
+                    adapter.addTransactions(transactions)
+                }
+            }
+        }
 //        progressBar.visibility = View.VISIBLE
 
 //        controller.loadTransactions { transactions ->
@@ -127,8 +145,34 @@ class TransactionsActivity : AppCompatActivity() {
         val descriptionText = dialogView.findViewById<EditText>(R.id.descriptionText)
 
         // TODO: Create a transaction and save it to Firebase when the button is clicked,
-        //  then update transactions view
+        //  then update transactions view -- Agus
         val addTransactionButton = dialogView.findViewById<Button>(R.id.addTransactionDialog)
+        addTransactionButton.setOnClickListener {
+            val amount = amountEditText.text.toString().toFloatOrNull() ?: 0f
+            val category = categorySpinner.selectedItem.toString()
+            val cal = Calendar.getInstance()
+            cal.set(datePicker.year, datePicker.month, datePicker.dayOfMonth)
+            val date = cal.time
+            val description = descriptionText.text.toString()
+
+            val txn = Transaction("", amount, category, date, description)
+            controller.addTransaction(txn) { success ->
+                runOnUiThread {
+                    if (success) {
+                        loadTransactions()
+                        Toast.makeText(this, "Transaction saved", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "Error saving transaction", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+        AlertDialog.Builder(this)
+        .setView(dialogView)
+        .setTitle("Add Transaction")
+        .setPositiveButton("Cancel", null)
+        .show()
+
     }
 
     private fun getUIElements() {
