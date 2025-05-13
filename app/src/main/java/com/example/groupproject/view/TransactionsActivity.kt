@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 import java.util.Locale
 import java.text.SimpleDateFormat
@@ -34,7 +35,7 @@ class TransactionsActivity : AppCompatActivity() {
     private lateinit var emptyState: TextView
     private lateinit var transactionsRecyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
-    private lateinit var addTransaction: Button
+    private lateinit var addTransaction: FloatingActionButton
     private lateinit var adView: AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
