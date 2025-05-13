@@ -89,6 +89,8 @@ class FinanceController(private val model: FinanceModel,private val context: Act
 
                     callback(currency)
                 }
+            }else{
+                callback(Currency.getAvailableCurrencies().first())
             }
         }.addOnFailureListener {
             Log.e("LocationError", "Failed to get location: ${it.message}")

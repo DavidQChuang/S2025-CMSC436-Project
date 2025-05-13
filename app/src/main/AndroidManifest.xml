@@ -28,6 +28,11 @@
         <activity android:name=".view.BudgetActivity" />
         <activity android:name=".view.TransactionsActivity" />
 
+        <service
+            android:name=".view.MainActivity"
+            android:foregroundServiceType="location">
+        <!-- Any inner elements would go here. -->
+        </service>
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713"/> <!-- Test ID -->
