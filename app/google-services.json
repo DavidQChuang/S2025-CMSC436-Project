@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "854634912232",
+    "project_id": "personalfinance-2faeb",
+    "storage_bucket": "personalfinance-2faeb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854634912232:android:b4aa5ae8eb431291d7ac5d",
+        "android_client_info": {
+          "package_name": "com.company.groupproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJ7gjQ1l51cdTCaJDOVAg4UAI-631Q_6k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854634912232:android:74e8d4d0eb5d360dd7ac5d",
+        "android_client_info": {
+          "package_name": "com.example.groupproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJ7gjQ1l51cdTCaJDOVAg4UAI-631Q_6k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854634912232:android:344b2e8e0ee47160d7ac5d",
+        "android_client_info": {
+          "package_name": "com.example.personalfinancetracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJ7gjQ1l51cdTCaJDOVAg4UAI-631Q_6k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
