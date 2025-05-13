@@ -53,9 +53,93 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="Budget Breakdown"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/budgetUsedText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Used: $500 of $2000"
+                        android:textSize="16sp" />
+
+                    <ProgressBar
+                        android:id="@+id/budgetProgressBar"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:layout_marginTop="8dp"
+                        android:max="100"
+                        android:progress="25"
+                        android:progressDrawable="@drawable/progress_budget" />
+
+                    <TextView
+                        android:id="@+id/budgetRemainingText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Remaining: $1500"
+                        android:textColor="@color/green_500"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:id="@+id/divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginBottom="14dp"
+                        android:background="?android:attr/listDivider" />
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Savings"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/savingsText2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="$750 of $2000"
+                        android:textSize="20sp" />
+
+                    <ProgressBar
+                        android:id="@+id/savingsProgressBar2"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:layout_marginTop="8dp"
+                        android:max="2000"
+                        android:progress="750"
+                        android:progressDrawable="@drawable/progress_savings" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:text="Current Monthly Budget"
                         android:textSize="18sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/budgetLeftText"
@@ -63,15 +147,15 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="$2000.00"
-                        android:textSize="24sp"
-                        android:textColor="@color/green_500"/>
+                        android:textColor="@color/green_500"
+                        android:textSize="24sp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="Adjust Budget"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp" />
 
                     <!-- SeekBar for budget adjustment -->
                     <SeekBar
@@ -80,7 +164,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:max="10000"
-                        android:progress="2000"/>
+                        android:progress="2000" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -91,19 +175,19 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Min: $500"
-                            android:textSize="12sp"/>
+                            android:text="Min: $0"
+                            android:textSize="12sp" />
 
                         <View
                             android:layout_width="0dp"
                             android:layout_height="1dp"
-                            android:layout_weight="1"/>
+                            android:layout_weight="1" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Max: $10,000"
-                            android:textSize="12sp"/>
+                            android:textSize="12sp" />
 
                     </LinearLayout>
 
@@ -112,14 +196,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="Save Budget"
                         android:backgroundTint="@color/purple_500"
-                        android:textColor="@color/white"/>
+                        android:text="Save Budget"
+                        android:textColor="@color/white" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Budget Breakdown Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -136,39 +219,73 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Budget Breakdown"
+                        android:text="Current Savings Goal"
                         android:textSize="18sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/budgetUsedText"
+                        android:id="@+id/savingsLeftText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Used: $500 of $2000"
-                        android:textSize="16sp"/>
-
-                    <ProgressBar
-                        android:id="@+id/budgetProgressBar"
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp"
-                        android:layout_marginTop="8dp"
-                        android:max="100"
-                        android:progress="25"
-                        android:progressDrawable="@drawable/progress_budget"/>
+                        android:text="$2000.00"
+                        android:textColor="@color/blue_500"
+                        android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/budgetRemainingText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Adjust Savings"
+                        android:textSize="16sp" />
+
+                    <!-- SeekBar for budget adjustment -->
+                    <SeekBar
+                        android:id="@+id/savingsSeekBar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Remaining: $1500"
-                        android:textSize="16sp"
-                        android:textColor="@color/green_500"/>
+                        android:max="10000"
+                        android:progress="2000"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Min: $0"
+                            android:textSize="12sp" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Max: $10,000"
+                            android:textSize="12sp"/>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/saveSavingsButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Save Savings Goal"
+                        android:backgroundTint="@color/purple_500"
+                        android:textColor="@color/white"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+            <!-- Budget Breakdown Card -->
 
             <!-- Category Budgets Card (originally planned but ran out of time) -->
 

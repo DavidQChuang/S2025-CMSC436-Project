@@ -13,6 +13,10 @@ class FinanceModel (context: Context) {
 
     /////////////////////////////
     // Local persistent data
+    var symbol: String
+        get() = prefs.getString("symbol", "$") ?: "$" // default: $
+        set(symbol) = prefs.edit { putString("symbol", symbol) }
+
     var savingsGoal: Int
         get() = prefs.getInt("savings_goal", 0) // default: 0
         set(goal) = prefs.edit { putInt("savings_goal", goal) }
@@ -25,18 +29,20 @@ class FinanceModel (context: Context) {
     // Remote persistent data
     // Save transaction to Firebase
     fun saveTransaction(transaction: Transaction, onComplete: (Boolean) -> Unit) {
+        Log.i("FinanceModel", "Saving transaction.")
         val txnRef = db.child("transactions").push()
         val txnWithId = transaction.copy(id = txnRef.key ?: "")
         txnRef.setValue(txnWithId)
             .addOnSuccessListener { onComplete(true) }
             .addOnFailureListener { error ->
                 onComplete(false)
-                Log.e("FinanceController", "Firebase failed to add a transaction.")
+                Log.e("FinanceModel", "Firebase failed to add a transaction.")
             }
     }
 
     // Get transactions from Firebase
     fun getTransactions(callback: (List<Transaction>?) -> Unit) {
+        Log.i("FinanceModel", "Getting transactions.")
         db.child("transactions")
             .get()
             .addOnSuccessListener { snapshot ->

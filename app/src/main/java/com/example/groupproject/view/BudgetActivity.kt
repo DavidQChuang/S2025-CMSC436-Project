@@ -16,6 +16,13 @@ class BudgetActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener  {
     private lateinit var model: FinanceModel
     private lateinit var controller: FinanceController
 
+    private lateinit var savingsText: TextView
+    private lateinit var savingsProgressBar: ProgressBar
+
+    private lateinit var savingsLeftText: TextView
+    private lateinit var savingsSeekBar: SeekBar
+    private lateinit var saveSavingsButton: Button
+
     private lateinit var budgetLeftText: TextView
     private lateinit var budgetSeekBar: SeekBar
     private lateinit var saveBudgetButton: Button
@@ -39,44 +46,44 @@ class BudgetActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener  {
         model = FinanceModel(applicationContext)
         controller = FinanceController(model, this)
 
-        // Set up seek bar listener
-        // TODO: retrieve value from model -- Agus
-        controller.loadTransactions { txns ->
-            if(txns == null) {
-                budgetUsed = -1
-            }
-            else {
-                budgetUsed = txns.sumOf {
-                    it.amount.toInt()
+        // Initialize elements from model
+        controller.loadTransactions { transactions ->
+            budgetUsed = transactions?.sumOf { it.amount.toInt() } ?: 0
+
+            // Load budget limit
+            controller.loadBudget { budgetLimit ->
+                runOnUiThread {
+                    budgetSeekBar.progress = budgetLimit
+                    updateBudgetDisplay(budgetLimit.toFloat())
                 }
             }
 
-            runOnUiThread {
-                // re-draw the SeekBar/UI with the real “used” amount
-                updateBudgetDisplay(budgetSeekBar.progress.toFloat())
+            // Load savings goal
+            controller.loadSavings { savingsGoal ->
+                runOnUiThread {
+                    savingsSeekBar.progress = savingsGoal
+                    updateSavingsDisplay(savingsGoal.toFloat())
+                }
             }
         }
 
-        updateBudgetDisplay(model.budgetGoal.toFloat())
+        // Setup budget seek bar
         budgetSeekBar.setOnSeekBarChangeListener(this)
-
-        // Set up save budget button
-        // TODO: Save value of budget seek bar to model (see below) -- Agus
-        //        saveBudgetButton.setOnClickListener(this)
-
-        controller.loadBudget { limit ->
-            budgetSeekBar.progress = limit
-            updateBudgetDisplay(limit.toFloat())
-        }
-        
         saveBudgetButton.setOnClickListener {
-            val newLimit = budgetSeekBar.progress
-            controller.saveBudget(newLimit) {
-                updateBudgetDisplay(newLimit.toFloat())
+            val newBudgetLimit = budgetSeekBar.progress
+            controller.saveBudget(newBudgetLimit) {
+                updateBudgetDisplay(newBudgetLimit.toFloat())
             }
         }
 
-
+        // Setup savings seek bar
+        savingsSeekBar.setOnSeekBarChangeListener(this)
+        saveSavingsButton.setOnClickListener {
+            val newSavingsGoal = savingsSeekBar.progress
+            controller.saveSavings(newSavingsGoal) {
+                updateSavingsDisplay(newSavingsGoal.toFloat())
+            }
+        }
 
         // Set up ad
         val adRequest = AdRequest.Builder().build()
@@ -86,8 +93,9 @@ class BudgetActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener  {
     ////////////////////////////////
     // Controller
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        if (fromUser) {
-            updateBudgetDisplay(progress.toFloat())
+        when (seekBar?.id) {
+            R.id.budgetSeekBar -> if (fromUser) updateBudgetDisplay(progress.toFloat())
+            R.id.savingsSeekBar -> if (fromUser) updateSavingsDisplay(progress.toFloat())
         }
     }
     override fun onStartTrackingTouch(seekBar: SeekBar?) {}
@@ -95,30 +103,55 @@ class BudgetActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener  {
 
     ////////////////////////////////
     // View API for controller use
-    private fun updateBudgetDisplay(progress: Float) {
-        val budgetMax = progress.toInt()
+    private fun updateBudgetDisplay(budgetMax: Float) {
+        val max = budgetMax.toInt()
+        val remaining = max - budgetUsed
 
-        budgetLeftText.text = "$${budgetMax}"
-        budgetUsedText.text =  "Used: $${budgetUsed} of $${budgetMax}"
+        val s = model.symbol
 
-        budgetProgressBar.max = budgetMax.toInt()
+        budgetLeftText.text = "$s$max"
+        budgetUsedText.text = "Used: $s$budgetUsed of $s$max"
+        budgetProgressBar.max = max
         budgetProgressBar.progress = budgetUsed
+        budgetRemainingText.text = "Remaining: $s$remaining"
 
-        budgetRemainingText.text = "Remaining: $${budgetMax - budgetUsed}"
+        // Update savings display since it depends on budget
+        updateSavingsDisplay(savingsSeekBar.progress.toFloat())
+    }
+
+    private fun updateSavingsDisplay(savingsMax: Float) {
+        val max = savingsMax.toInt()
+        val currentSavings = budgetProgressBar.max - budgetUsed
+        val progress = currentSavings.coerceAtMost(max)
+
+        val s = model.symbol
+
+        savingsLeftText.text = "$s$max"
+        savingsText.text = "$s$currentSavings of $s$max"
+        savingsProgressBar.max = max
+        savingsProgressBar.progress = progress
     }
 
     ///////////////////////////////////
     // Misc
     private fun getUIElements() {
-        // Card 1: Current / adjustment
+        // Card 1: breakdown
+        budgetUsedText = findViewById(R.id.budgetUsedText)
+        budgetProgressBar =  findViewById(R.id.budgetProgressBar)
+        budgetRemainingText = findViewById(R.id.budgetRemainingText)
+
+        savingsText = findViewById(R.id.savingsText2)
+        savingsProgressBar = findViewById(R.id.savingsProgressBar2)
+
+        // Card 2: Budget adjustment
         budgetLeftText = findViewById(R.id.budgetLeftText)
         budgetSeekBar =  findViewById(R.id.budgetSeekBar)
         saveBudgetButton = findViewById(R.id.saveBudgetButton)
 
-        // Card 2: breakdown
-        budgetUsedText = findViewById(R.id.budgetUsedText)
-        budgetProgressBar =  findViewById(R.id.budgetProgressBar)
-        budgetRemainingText = findViewById(R.id.budgetRemainingText)
+        // Card 3: Savings adjustment
+        savingsLeftText = findViewById(R.id.savingsLeftText)
+        savingsSeekBar =  findViewById(R.id.savingsSeekBar)
+        saveSavingsButton = findViewById(R.id.saveSavingsButton)
 
         // Ad view
         adView = findViewById<AdView>(R.id.adView)

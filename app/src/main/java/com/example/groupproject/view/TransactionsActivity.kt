@@ -19,6 +19,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
@@ -63,11 +64,6 @@ class TransactionsActivity : AppCompatActivity() {
         // Set up transactions view
         loadTransactions()
 
-//        // TODO: Remove, this is a test
-//        adapter.addTransactions(mutableListOf(
-//            Transaction("asdf", 100f, "Food", Calendar.getInstance().time, "stuff")
-//        ))
-
         // Set up ad
         val adRequest = AdRequest.Builder().build()
         adView.loadAd(adRequest)
@@ -81,10 +77,10 @@ class TransactionsActivity : AppCompatActivity() {
             if(transactions == null) {
                 progressBar.visibility = View.GONE
                 emptyState.visibility = View.VISIBLE
-                emptyState.text = "@string/empty_state_error"
+                emptyState.text = getString(R.string.empty_state_error)
             }
             else {
-                emptyState.text = "@string/empty_state"
+                emptyState.text = getString(R.string.empty_state)
 
                 runOnUiThread {
                     progressBar.visibility = View.GONE
@@ -95,6 +91,7 @@ class TransactionsActivity : AppCompatActivity() {
                         emptyState.visibility = View.GONE
                         transactionsRecyclerView.visibility = View.VISIBLE
                         adapter.addTransactions(transactions)
+                        transactionsRecyclerView.adapter = adapter
                     }
                 }
             }
@@ -105,10 +102,13 @@ class TransactionsActivity : AppCompatActivity() {
     // Misc
 
     private fun setupRecyclerView() {
-        adapter = TransactionAdapter(mutableListOf()) { transaction ->
+        adapter = TransactionAdapter(model, mutableListOf(
+            Transaction("asdf", 100f, "Food", Calendar.getInstance().time, "stuff")
+        )) { transaction ->
             showTransactionDetails(transaction)
         }
 
+        transactionsRecyclerView.layoutManager = LinearLayoutManager(this)
         transactionsRecyclerView.adapter = adapter
         transactionsRecyclerView.addItemDecoration(
             DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
@@ -119,10 +119,12 @@ class TransactionsActivity : AppCompatActivity() {
     private fun showTransactionDetails(transaction: Transaction) {
         val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
 
+        val s = model.symbol
+
         AlertDialog.Builder(this)
             .setTitle("Transaction Details")
             .setMessage(
-                "Amount: $${transaction.amount}\n" +
+                "Amount: $s${transaction.amount}\n" +
                         "Category: ${transaction.category}\n" +
                         "Date: ${dateFormat.format(transaction.date)}\n" +
                         "Description: ${transaction.description}"

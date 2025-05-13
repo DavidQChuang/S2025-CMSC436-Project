@@ -9,6 +9,8 @@ data class Transaction(
     val date: Date,
     val description: String
 ) {
+    constructor() : this("", 0f, "", Date(), "") { }
+
     fun toMap(): Map<String, Any> {
         return mapOf(
             "amount" to amount,

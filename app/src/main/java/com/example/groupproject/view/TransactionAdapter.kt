@@ -7,11 +7,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.groupproject.R
+import com.example.groupproject.model.FinanceModel
 import com.example.groupproject.model.Transaction
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class TransactionAdapter(
+    private val model: FinanceModel,
     private var transactions: MutableList<Transaction>,
     private val onItemClick: (Transaction) -> Unit
 ) : RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
@@ -23,7 +25,7 @@ class TransactionAdapter(
         private val iconImage: ImageView = itemView.findViewById(R.id.ivIcon)
 
         fun bind(transaction: Transaction) {
-            amountText.text = String.format("$%.2f", transaction.amount)
+            amountText.text = String.format("${model.symbol}%.2f", transaction.amount)
             categoryText.text = transaction.category
             dateText.text = SimpleDateFormat("MMM dd", Locale.getDefault()).format(transaction.date)
 
@@ -43,7 +45,7 @@ class TransactionAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_transaction, parent, true)
+            .inflate(R.layout.item_transaction, parent, false)
         return TransactionViewHolder(view)
     }
 
