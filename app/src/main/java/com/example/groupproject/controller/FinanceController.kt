@@ -1,13 +1,14 @@
 package com.example.groupproject.controller
 
 import android.content.Context
+import android.util.Log
 import com.example.groupproject.model.FinanceModel
 import com.example.groupproject.model.Transaction
 
 class FinanceController(private val model: FinanceModel,private val context: Context) {
 
     // Load all transactions from Firebase
-    fun loadTransactions(onLoaded: (List<Transaction>) -> Unit) {
+    fun loadTransactions(onLoaded: (List<Transaction>?) -> Unit) {
         model.getTransactions { txns ->
             onLoaded(txns)
         }

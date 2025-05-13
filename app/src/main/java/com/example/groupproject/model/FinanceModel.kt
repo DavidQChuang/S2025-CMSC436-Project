@@ -2,6 +2,7 @@ package com.example.groupproject.model
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.core.content.edit
 import com.google.firebase.database.FirebaseDatabase
 
@@ -28,16 +29,23 @@ class FinanceModel (context: Context) {
         val txnWithId = transaction.copy(id = txnRef.key ?: "")
         txnRef.setValue(txnWithId)
             .addOnSuccessListener { onComplete(true) }
-            .addOnFailureListener { onComplete(false) }
+            .addOnFailureListener { error ->
+                onComplete(false)
+                Log.e("FinanceController", "Firebase failed to add a transaction.")
+            }
     }
 
     // Get transactions from Firebase
-    fun getTransactions(callback: (List<Transaction>) -> Unit) {
+    fun getTransactions(callback: (List<Transaction>?) -> Unit) {
         db.child("transactions")
             .get()
             .addOnSuccessListener { snapshot ->
                 val txns = snapshot.children.mapNotNull { it.getValue(Transaction::class.java) }
                 callback(txns)
+            }
+            .addOnFailureListener {
+                callback(null)
+                Log.e("FinanceModel", "Firebase failed to load transactions.")
             }
     }
 }

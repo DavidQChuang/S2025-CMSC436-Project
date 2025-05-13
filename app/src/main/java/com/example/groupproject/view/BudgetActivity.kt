@@ -42,13 +42,19 @@ class BudgetActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener  {
         // Set up seek bar listener
         // TODO: retrieve value from model -- Agus
         controller.loadTransactions { txns ->
-            budgetUsed = txns.sumOf { 
-                it.amount.toInt() 
+            if(txns == null) {
+                budgetUsed = -1
             }
+            else {
+                budgetUsed = txns.sumOf {
+                    it.amount.toInt()
+                }
+            }
+
             runOnUiThread {
                 // re-draw the SeekBar/UI with the real “used” amount
                 updateBudgetDisplay(budgetSeekBar.progress.toFloat())
-            } 
+            }
         }
 
         updateBudgetDisplay(model.budgetGoal.toFloat())

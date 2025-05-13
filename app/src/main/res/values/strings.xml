@@ -2,4 +2,6 @@
     <string name="app_name">Budget Tracker</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="empty_state">No transactions found\nTap + to add your first transaction</string>
+    <string name="empty_state_error">Transactions failed to load.</string>
 </resources>

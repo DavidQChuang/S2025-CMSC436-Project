@@ -1,17 +1,18 @@
 package com.example.groupproject.view
 
 import android.app.AlertDialog
-import android.icu.util.Calendar
 import com.example.groupproject.R
 import com.example.groupproject.controller.FinanceController
 import com.example.groupproject.model.*
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.LayoutInflater;
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
@@ -62,10 +63,10 @@ class TransactionsActivity : AppCompatActivity() {
         // Set up transactions view
         loadTransactions()
 
-        // TODO: Remove, this is a test
-        adapter.addTransactions(mutableListOf(
-            Transaction("asdf", 100f, "Food", Calendar.getInstance().time, "stuff")
-        ))
+//        // TODO: Remove, this is a test
+//        adapter.addTransactions(mutableListOf(
+//            Transaction("asdf", 100f, "Food", Calendar.getInstance().time, "stuff")
+//        ))
 
         // Set up ad
         val adRequest = AdRequest.Builder().build()
@@ -74,36 +75,30 @@ class TransactionsActivity : AppCompatActivity() {
 
     public fun loadTransactions() {// -- Agus
         progressBar.visibility = View.VISIBLE
+        emptyState.visibility = View.GONE
         controller.loadTransactions { transactions ->
-            runOnUiThread {
+            // if transactions failed to load, set emptyState text accordingly
+            if(transactions == null) {
                 progressBar.visibility = View.GONE
-                if (transactions.isEmpty()) {
-                    emptyState.visibility = View.VISIBLE
-                    transactionsRecyclerView.visibility = View.GONE
-                } else {
-                    emptyState.visibility = View.GONE
-                    transactionsRecyclerView.visibility = View.VISIBLE
-                    adapter.addTransactions(transactions)
+                emptyState.visibility = View.VISIBLE
+                emptyState.text = "@string/empty_state_error"
+            }
+            else {
+                emptyState.text = "@string/empty_state"
+
+                runOnUiThread {
+                    progressBar.visibility = View.GONE
+                    if (transactions.isEmpty()) {
+                        emptyState.visibility = View.VISIBLE
+                        transactionsRecyclerView.visibility = View.GONE
+                    } else {
+                        emptyState.visibility = View.GONE
+                        transactionsRecyclerView.visibility = View.VISIBLE
+                        adapter.addTransactions(transactions)
+                    }
                 }
             }
         }
-//        progressBar.visibility = View.VISIBLE
-
-//        controller.loadTransactions { transactions ->
-//            progressBar.visibility = View.GONE
-//
-//            // Set visibility of 'no transactions' text and recycler view
-//            if (transactions.isEmpty()) {
-//                emptyState.visibility = View.VISIBLE
-//                transactionsRecyclerView.visibility = View.GONE
-//            }
-//            else {
-//                emptyState.visibility = View.GONE
-//                transactionsRecyclerView.visibility = View.VISIBLE
-//                adapter.updateData(transactions)
-//                // TODO: Update transactions page from list of transactions
-//            }
-//        }
     }
 
     ///////////////////////////////////
@@ -144,10 +139,18 @@ class TransactionsActivity : AppCompatActivity() {
         val datePicker = dialogView.findViewById<DatePicker>(R.id.datePicker)
         val descriptionText = dialogView.findViewById<EditText>(R.id.descriptionText)
 
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setTitle("Add Transaction")
+            .setPositiveButton("Cancel", null)
+            .create()
+
         // TODO: Create a transaction and save it to Firebase when the button is clicked,
         //  then update transactions view -- Agus
-        val addTransactionButton = dialogView.findViewById<Button>(R.id.addTransactionDialog)
+        val addTransactionButton = dialogView.findViewById<FloatingActionButton>(R.id.addTransactionDialog)
         addTransactionButton.setOnClickListener {
+            Log.i("TransactionsActivity", "Add transaction button presssed")
+
             val amount = amountEditText.text.toString().toFloatOrNull() ?: 0f
             val category = categorySpinner.selectedItem.toString()
             val cal = Calendar.getInstance()
@@ -164,15 +167,12 @@ class TransactionsActivity : AppCompatActivity() {
                     } else {
                         Toast.makeText(this, "Error saving transaction", Toast.LENGTH_SHORT).show()
                     }
+                    dialog.dismiss()
                 }
             }
         }
-        AlertDialog.Builder(this)
-        .setView(dialogView)
-        .setTitle("Add Transaction")
-        .setPositiveButton("Cancel", null)
-        .show()
 
+        dialog.show()
     }
 
     private fun getUIElements() {

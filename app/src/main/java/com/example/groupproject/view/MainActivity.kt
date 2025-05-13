@@ -4,6 +4,7 @@ import com.example.groupproject.R
 import com.example.groupproject.controller.FinanceController
 import com.example.groupproject.model.FinanceModel
 
+import android.util.Log
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ProgressBar
@@ -44,17 +45,26 @@ class MainActivity : AppCompatActivity() {
         model = FinanceModel(applicationContext)
         controller = FinanceController(model, this)
 
+        setBudget(0, model.budgetGoal)
+        setSpending(0)
+        setSavings(model.budgetGoal, model.savingsGoal)
+
         // TODO: Set up UI elements in MainActivity using info from Model -- Agus
         controller.loadBudget { budgetMax ->
             controller.loadTransactions { txns ->
-                val totalSpent = txns.sumOf { it.amount.toInt() }
+                var totalSpent = -1
+
+                if(txns != null) {
+                    totalSpent = txns.sumOf { it.amount.toInt() }
+                }
+
                 runOnUiThread {
                     setBudget(totalSpent, budgetMax)
                     setSpending(totalSpent)
+                    setSavings(budgetMax-totalSpent, model.savingsGoal)
                 }
             }
         }
-
 
         // Set up navigation
         bottomNavigation.setOnItemSelectedListener { item ->
@@ -73,6 +83,8 @@ class MainActivity : AppCompatActivity() {
     ////////////////////////////////
     // View API for controller use
     public fun setBudget(budgetUsed: Int, budgetMax: Int) {
+        Log.i("MainActivity", "Set budget: $${budgetUsed} of $${budgetMax}")
+
         budgetLeftText.text = "$${budgetMax}"
         budgetUsedText.text = "$${budgetUsed} of $${budgetMax}"
 
@@ -81,10 +93,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     public fun setSpending(totalSpent: Int) {
+        Log.i("MainActivity", "Set spending: $${totalSpent}")
         totalSpentText.text = "$${totalSpent}"
     }
 
     public fun setSavings(savings: Int, savingsGoal: Int) {
+        Log.i("MainActivity", "Set savings: \$${savings} of \$${savingsGoal}")
+
         savingsText.text = "$${savings} of $${savingsGoal}"
 
         savingsProgressBar.progress = savings
